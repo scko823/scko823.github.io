@@ -1,0 +1,308 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Passport - An absolute beginner's guide</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=3e00104329">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://localhost:2368/passport-an-absolute-beginners-guide/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="When the snow melts">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Passport - An absolute beginner's guide">
+    <meta property="og:description" content="Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level. what you need I">
+    <meta property="og:url" content="http://localhost:2368/passport-an-absolute-beginners-guide/">
+    <meta property="article:published_time" content="2016-07-12T22:44:24.116Z">
+    <meta property="article:modified_time" content="2016-07-12T22:44:24.109Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Passport - An absolute beginner's guide">
+    <meta name="twitter:description" content="Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level. what you need I">
+    <meta name="twitter:url" content="http://localhost:2368/passport-an-absolute-beginners-guide/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Sin Cheung Ko">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "When the snow melts",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Sin Cheung Ko",
+        "image": "http://localhost:2368/content/images/2016/07/12867107.jpeg",
+        "url": "http://localhost:2368/author/sin/",
+        "sameAs": [],
+        "description": "Completely uprooted my life in Phoenix, AZ to move to Austin, TX to join MakerSquare, a JavaScript focused coding bootcamp."
+    },
+    "headline": "Passport - An absolute beginner&#x27;s guide",
+    "url": "http://localhost:2368/passport-an-absolute-beginners-guide/",
+    "datePublished": "2016-07-12T22:44:24.116Z",
+    "dateModified": "2016-07-12T22:44:24.109Z",
+    "description": "Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level. what you need I"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.8">
+    <link rel="alternate" type="application/rss+xml" title="When the snow melts" href="http://localhost:2368/rss/">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http://localhost:2368/">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="http://localhost:2368/rss/">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Passport - An absolute beginner's guide</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-07-12">12 July 2016</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p><a href="http://passportjs.org/">Passport</a> is probably the way to implement authentication in Node. There are <a href="https://scotch.io/tutorials/easy-node-authentication-setup-and-local">many</a> <a href="http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/#.V3p1kJMrKHo">many</a> tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level.</p>
+
+<h6 id="whatyouneed">what you need</h6>
+
+<p>I used <a href="http://expressjs.com/en/starter/generator.html">express generator</a> as the basis for this demo, and mongodb on the db side.</p>
+
+<h6 id="jumpingintothecode">jumping in to the code</h6>
+
+<p><b> <br>
+after the basic express app is generated, bring in the dependencies. <br>
+</b></p>
+
+<p>in CLI  </p>
+
+<pre><code>npm installl --save express-session mongoose passport passport-local  
+</code></pre>
+
+<p>
+in app.js  </p>
+
+<pre><code>var session = require('express-session');  
+var mongoose = require('mongoose');  
+mongoose.connect('mongodb://localhost/passport');  
+var passport = require('passport');  
+var localStrategy = require('passport-local').Strategy;  
+</code></pre>
+
+<p>Nothing should be new here.</p>
+
+<p><b> <br>
+create the User model <br>
+</b>  </p>
+
+<pre><code>var User = mongoose.model('User', {  
+  username:String,
+  password:String
+});
+</code></pre>
+
+<p>So the User document will get a username and password. Of course, in an actual application, you will need save the <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">hashed password</a> instead of the plaintext password. But it has nothing to do with passport, so I will leave that for you to implement.</p>
+
+<h6 id="useexpresssession">use express session</h6>
+
+<p>Config the app to use express session. A good place to put this is after the line of setting the <a href="http://expressjs.com/en/starter/static-files.html">express static middleware.</a> If you are not familiar with session, check out this <a href="http://stackoverflow.com/questions/3804209/what-are-sessions-how-do-they-work">stackoverflow.</a></p>
+
+<pre><code>app.use(session({secret:"this string should be hidden"}));  
+</code></pre>
+
+<h6 id="settinguplocalstrategy">setting up local strategy</h6>
+
+<p>Now we are jumping to the meat of the blog. <br>
+The general format is passport.use(strategy config,callback)  </p>
+
+<pre><code>passport.use(new localStrategy({  
+  //these are default value, but you can use email as username field
+  usernameField:'username',
+  passwordField:'password',
+},function(username, password, done){
+  User.findOne({username:username}, function(err, user){
+    if (err){
+      return done(err, null)
+    }
+    if (!user){
+      //the message obj is optional
+      return done(null, false, {message:'no such user'}) 
+    }
+    if (user.password !== password){
+      //the message obj is optional
+      return done(null, false, {message:'password incorrect'})
+    }else{
+      return done(null,user)
+    }
+  })
+}));
+</code></pre>
+
+<p>Couple things to know <br>
+1. The done callback take 2 args, just like any node callback, it's error first, and the second argument is the user object. Calling the done callback will take you out of the callback. <br>
+2. the optional message is used for flash message.</p>
+
+<h6 id="serializedeserialize">serialize/deserialize</h6>
+
+<pre><code>passport.serializeUser(function(user, done){  
+  return done(null, user._id)
+})
+
+passport.deserializeUser(function(id, done){  
+  User.findById(id, function (err, user) {
+    if (err){return done(err, false)}
+    return done(null, user)
+  })
+})
+</code></pre>
+
+<p>Here is an <a href="http://stackoverflow.com/questions/28691215/when-is-the-serialize-and-deserialize-passport-method-called-what-does-it-exact">excellent explanation</a> of what serializeUser and deserializeUser does. tl;dr all requests from logged in user come with the user id, and passport find the user object and put in on <code>req.user</code></p>
+
+<h6 id="usingpassport">using passport</h6>
+
+<p>it is probably the easiest part. After setting passport, just add  </p>
+
+<pre><code>app.use(passport.initialize());  
+app.use(passport.session());  
+</code></pre>
+
+<h6 id="loggingin">logging in</h6>
+
+<p>create a login form with jade <code>views/login.jade</code> </p>
+
+<pre><code>extends layout
+
+block content  
+  form(action="/login" method="post")
+      div
+        label Username:
+        input(type="text" name="username")
+      div
+        label password:
+        input(type="text" name="password")
+      div 
+        input(type="submit" value="log in")
+</code></pre>
+
+<p>set up routing to the login form  </p>
+
+<pre><code>app.get('/login', function(req, res){  
+  res.render('login')
+});
+app.post('/login',  
+  passport.authenticate('local', { 
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: false })
+);
+</code></pre>
+
+<p>And there you are, all logged in and authenticated.</p>
+
+<h6 id="protectedroutes">protected routes</h6>
+
+<p>One last thing, you need a middleware to check if a user is logged in before routing them to a protected routes</p>
+
+<pre><code>function isLoggedIn (req, res, next){  
+  if (req.isAuthenticated()){
+    next()
+  }else{
+    res.redirect('/login')
+  }
+}
+app.get('/protected', isLoggedIn, function(req, res){  
+  //whatever goes here
+});
+</code></pre>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/sin/" style="background-image: url(../content/images/2016/07/12867107.jpeg)"><span class="hidden">Sin Cheung Ko's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/sin/">Sin Cheung Ko</a></h4>
+
+                    <p>Completely uprooted my life in Phoenix, AZ to move to Austin, TX to join MakerSquare, a JavaScript focused coding bootcamp.</p>
+                <div class="author-meta">
+                    <span class="author-location icon-location">Austin, TX</span>
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Passport%20-%20An%20absolute%20beginner's%20guide&amp;url=http://localhost:2368/passport-an-absolute-beginners-guide/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/passport-an-absolute-beginners-guide/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/passport-an-absolute-beginners-guide/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://localhost:2368">When the snow melts</a> © 2016</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=3e00104329"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=3e00104329"></script>
+
+</body>
