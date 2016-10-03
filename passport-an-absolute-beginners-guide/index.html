@@ -11,7 +11,7 @@
 
     <link rel="shortcut icon" href="../favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=3e00104329">
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=a067fc23c1">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
 
     <link rel="canonical" href="http://localhost:2368/passport-an-absolute-beginners-guide/">
@@ -20,13 +20,13 @@
     <meta property="og:site_name" content="When the snow melts">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Passport - An absolute beginner's guide">
-    <meta property="og:description" content="Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level. what you need I">
+    <meta property="og:description" content="Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because they just give you the overall architecture. This blog post will indeed talk about what passport does on a basic level. what you">
     <meta property="og:url" content="http://localhost:2368/passport-an-absolute-beginners-guide/">
     <meta property="article:published_time" content="2016-07-12T22:44:24.116Z">
-    <meta property="article:modified_time" content="2016-07-12T22:44:24.109Z">
+    <meta property="article:modified_time" content="2016-10-03T04:49:51.503Z">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Passport - An absolute beginner's guide">
-    <meta name="twitter:description" content="Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level. what you need I">
+    <meta name="twitter:description" content="Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because they just give you the overall architecture. This blog post will indeed talk about what passport does on a basic level. what you">
     <meta name="twitter:url" content="http://localhost:2368/passport-an-absolute-beginners-guide/">
     <meta name="twitter:label1" content="Written by">
     <meta name="twitter:data1" content="Sin Cheung Ko">
@@ -51,8 +51,8 @@
     "headline": "Passport - An absolute beginner&#x27;s guide",
     "url": "http://localhost:2368/passport-an-absolute-beginners-guide/",
     "datePublished": "2016-07-12T22:44:24.116Z",
-    "dateModified": "2016-07-12T22:44:24.109Z",
-    "description": "Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level. what you need I"
+    "dateModified": "2016-10-03T04:49:51.503Z",
+    "description": "Passport is probably the way to implement authentication in Node. There are many many tutorials on the web, but following them is still difficult for beginners, because they just give you the overall architecture. This blog post will indeed talk about what passport does on a basic level. what you"
 }
     </script>
 
@@ -97,7 +97,7 @@
         </header>
 
         <section class="post-content">
-            <p><a href="http://passportjs.org/">Passport</a> is probably the way to implement authentication in Node. There are <a href="https://scotch.io/tutorials/easy-node-authentication-setup-and-local">many</a> <a href="http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/#.V3p1kJMrKHo">many</a> tutorials on the web, but following them is still difficult for beginners, because just give you the overall architecture. This blog post will indeed talk what passport does on a basic level.</p>
+            <p><a href="http://passportjs.org/">Passport</a> is probably the way to implement authentication in Node. There are <a href="https://scotch.io/tutorials/easy-node-authentication-setup-and-local">many</a> <a href="http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/#.V3p1kJMrKHo">many</a> tutorials on the web, but following them is still difficult for beginners, because they just give you the overall architecture. This blog post will indeed talk about what passport does on a basic level.</p>
 
 <h6 id="whatyouneed">what you need</h6>
 
@@ -111,7 +111,7 @@ after the basic express app is generated, bring in the dependencies. <br>
 
 <p>in CLI  </p>
 
-<pre><code>npm installl --save express-session mongoose passport passport-local  
+<pre><code>npm install --save express-session mongoose passport passport-local  
 </code></pre>
 
 <p>
@@ -124,7 +124,7 @@ var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;  
 </code></pre>
 
-<p>Nothing should be new here.</p>
+<p>Nothing new so far.</p>
 
 <p><b> <br>
 create the User model <br>
@@ -142,7 +142,9 @@ create the User model <br>
 
 <p>Config the app to use express session. A good place to put this is after the line of setting the <a href="http://expressjs.com/en/starter/static-files.html">express static middleware.</a> If you are not familiar with session, check out this <a href="http://stackoverflow.com/questions/3804209/what-are-sessions-how-do-they-work">stackoverflow.</a></p>
 
-<pre><code>app.use(session({secret:"this string should be hidden"}));  
+<pre><code>app.use(session({  
+    secret:"this string should be hidden"
+}));
 </code></pre>
 
 <h6 id="settinguplocalstrategy">setting up local strategy</h6>
@@ -302,7 +304,7 @@ app.get('/protected', isLoggedIn, function(req, res){
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     
-    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=3e00104329"></script>
-    <script type="text/javascript" src="../assets/js/index.js?v=3e00104329"></script>
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=a067fc23c1"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=a067fc23c1"></script>
 
 </body>
